@@ -64,3 +64,11 @@ def toggle_status(blog_id):
         }}
     )
     return jsonify({"status": new_status})
+
+@api.route("/blog/delete/<blog_id>", methods=["POST"])
+@login_required
+def delete_blog(blog_id):
+    db.blogs_meta.delete_one({"blog_id": blog_id})
+    db.blogs_content.delete_one({"blog_id": blog_id})
+
+    return jsonify({"status": "deleted"})
