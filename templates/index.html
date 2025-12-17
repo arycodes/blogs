@@ -70,17 +70,20 @@
 
 <body class="min-h-screen flex flex-col">
 
-    <nav class="w-full border-b border-zinc-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <!-- Logo placeholder of needed -->
-                <!-- <div class="p-1.5 bg-black text-white rounded-lg">
-                    <i data-lucide="feather" class="w-4 h-4"></i>
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-zinc-100 transition-all duration-300">
+        <div class="max-w-[1280px] mx-auto px-6 h-14 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 group">
+                <!-- Use this is logo needed -->
+                <!-- <div class="p-1 bg-black text-white rounded">
+                    <i data-lucide="camera" class="w-3 h-3"></i>
                 </div> -->
-                <span class="font-bold text-lg tracking-tight">{{ PlatformName }}</span>
-            </div>
+                <span
+                    class="font-bold text-base tracking-tight text-zinc-900 group-hover:text-zinc-600 transition-colors">{{
+                    PlatformName }}</span>
+            </a>
 
-            <a href="#" class="text-sm font-medium text-zinc-500 hover:text-black transition">
+            <a href="#"
+                class="text-xs font-semibold uppercase tracking-wider text-zinc-500 hover:text-black transition-colors border border-zinc-200 px-3 py-1.5 rounded-full hover:border-black">
                 Subscribe
             </a>
         </div>
@@ -201,6 +204,8 @@
 
     {% if latest %}
     <script>
+                // Showing error but its ohk as this is jinja template
+
         lucide.createIcons();
         const LATEST_CONTENT = {{ latest.content | tojson }};
 
