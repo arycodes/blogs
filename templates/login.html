@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f5; 
+            color: #18181b; 
+        }
+        
+        input {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center px-4">
+
+    <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl border border-zinc-100 p-8 md:p-10">
+        
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-zinc-100 mb-4 text-zinc-900">
+                <i data-lucide="lock" class="w-5 h-5"></i>
+            </div>
+            <h1 class="text-2xl font-bold tracking-tight text-zinc-900">Welcome back</h1>
+            <p class="text-sm text-zinc-500 mt-2">Please enter your details to sign in.</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-6 space-y-2">
+                {% for category, msg in messages %}
+                    <div class="p-3 rounded-lg text-sm font-medium flex items-center gap-2 
+                        {% if category == 'error' %} bg-red-50 text-red-600 border border-red-100
+                        {% else %} bg-zinc-50 text-zinc-600 border border-zinc-200 {% endif %}">
+                        
+                        {% if category == 'error' %}
+                            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                        {% else %}
+                            <i data-lucide="info" class="w-4 h-4"></i>
+                        {% endif %}
+                        
+                        {{ msg }}
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="space-y-5">
+            
+            <div class="space-y-1.5">
+                <label for="username" class="block text-xs font-bold uppercase tracking-wider text-zinc-500">
+                    Username
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                    </div>
+                    <input type="text" name="username" id="username" required 
+                        placeholder="Enter your username"
+                        class="block w-full pl-10 pr-3 py-2.5 bg-zinc-50 border border-zinc-200 rounded-lg text-sm placeholder-zinc-400 focus:outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black">
+                </div>
+            </div>
+
+            <div class="space-y-1.5">
+                <label for="password" class="block text-xs font-bold uppercase tracking-wider text-zinc-500">
+                    Password
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
+                        <i data-lucide="key" class="w-4 h-4"></i>
+                    </div>
+                    <input type="password" name="password" id="password" required 
+                        placeholder="••••••••"
+                        class="block w-full pl-10 pr-3 py-2.5 bg-zinc-50 border border-zinc-200 rounded-lg text-sm placeholder-zinc-400 focus:outline-none focus:bg-white focus:border-black focus:ring-1 focus:ring-black">
+                </div>
+            </div>
+
+            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-black hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors duration-200 mt-2">
+                Sign In
+            </button>
+
+        </form>
+
+        <div class="mt-8 text-center">
+            <p class="text-xs text-zinc-400">
+                &copy; 2025 Secure Login
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

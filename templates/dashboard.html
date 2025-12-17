@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | AryCodes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen font-sans text-slate-800">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900">Content Dashboard</h1>
+                <p class="text-slate-500 mt-1">Manage your posts, track status, and create new content.</p>
+            </div>
+
+            <a href="/blog/create"
+                class="group flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-lg hover:bg-slate-800 transition shadow-lg hover:shadow-xl transform active:scale-95">
+                <i data-lucide="plus-circle"
+                    class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300"></i>
+                <span class="font-medium">Create New</span>
+            </a>
+        </div>
+
+        {% if not blogs %}
+        <div
+            class="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-dashed border-slate-300">
+            <div class="bg-slate-50 p-4 rounded-full mb-4">
+                <i data-lucide="file-text" class="w-10 h-10 text-slate-400"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-900">No blogs created yet</h3>
+            <p class="text-slate-500 text-sm mt-1 mb-6">Get started by creating your first post.</p>
+            <a href="/blog/create" class="text-indigo-600 font-medium hover:underline">Create a post &rarr;</a>
+        </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {% for blog in blogs %}
+            <a href="/blog/edit/{{ blog.blog_id }}"
+                class="group block bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+
+                <div class="relative h-48 w-full overflow-hidden bg-slate-100">
+                    {% if blog.thumbnail_url %}
+                    <img src="{{ blog.thumbnail_url }}" alt="Thumbnail"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    {% else %}
+                    <div
+                        class="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
+                        <i data-lucide="image" class="w-8 h-8 text-slate-300"></i>
+                    </div>
+                    {% endif %}
+
+                    <div class="absolute top-4 right-4">
+                        {% if blog.status == "published" %}
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/90 text-green-700 shadow-sm backdrop-blur-sm border border-green-100">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            PUBLISHED
+                        </span>
+                        {% else %}
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/90 text-slate-600 shadow-sm backdrop-blur-sm border border-slate-200">
+                            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                            DRAFT
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <p class="text-xs font-mono text-slate-400 mb-2 truncate">/{{ blog.slug }}</p>
+
+                    <h2
+                        class="text-xl font-bold text-slate-800 mb-3 line-clamp-2 leading-tight group-hover:text-indigo-600 transition-colors">
+                        {{ blog.title }}
+                    </h2>
+
+                    {% if blog.description %}
+                    <p class="text-sm text-slate-500 line-clamp-2 mb-4">
+                        {{ blog.description }}
+                    </p>
+                    {% endif %}
+
+                    <div class="border-t border-slate-100 my-4"></div>
+
+                    <div class="flex items-center justify-between text-xs text-slate-500">
+
+                        <div class="flex items-center gap-2">
+                            <div
+                                class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold uppercase text-[10px]">
+                                {{ blog.author.name[0] | default('A') }}
+                            </div>
+                            <span class="font-medium text-slate-700">{{ blog.author.name | default('Unknown') }}</span>
+                        </div>
+
+                        <div class="flex items-center gap-1.5" title="Last Updated">
+                            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                            <span>{{ blog.updated_at.strftime('%b %d, %H:%M') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+
+</html>
