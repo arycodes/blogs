@@ -36,3 +36,12 @@ def blog(slug):
         PlatformName = BlogPlatformNamme
 
     )
+
+
+@viewer.route("/subscribe/")
+def subscribe():
+    return render_template(
+        "newslettersignup.html",
+        PlatformName = BlogPlatformNamme
+
+    )
