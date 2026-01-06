@@ -3,132 +3,111 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>The Blog</title>
+    <title>{{ PlatformName }} — Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@400&display=swap"
         rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark-dimmed.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
         :root {
-            --font-ui: 'Inter', sans-serif;
-            --font-body: 'Merriweather', serif;
-            --font-code: 'JetBrains Mono', monospace;
+            --font-geist: 'Geist', sans-serif;
+            /* Fluid Typography Scale */
+            --text-base: clamp(1rem, 0.95rem + 0.2vw, 1.05rem);
+            --text-h1: clamp(2rem, 5vw, 3.5rem);
         }
 
         body {
-            font-family: var(--font-ui);
+            font-family: var(--font-geist);
             background-color: #ffffff;
-            color: #18181b;
+            color: #111;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Typography Overrides */
         .prose {
-            font-family: var(--font-body);
-            color: #3f3f46;
+            max-width: 70ch !important;
+            font-size: var(--text-base);
+            color: #4b5563;
         }
 
-        .prose h1,
-        .prose h2,
-        .prose h3 {
-            font-family: var(--font-ui);
-            color: #18181b;
-            margin-top: 1.5em;
+        .nav-blur {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: saturate(180%) blur(10px);
         }
 
-        .prose p {
-            line-height: 1.8;
-            margin-bottom: 1em;
+        /* Smooth thumbnail transition */
+        .thumb-gray {
+            filter: grayscale(1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .prose pre {
-            background-color: #18181b;
-            border-radius: 0.5rem;
-            font-family: var(--font-code);
-            font-size: 0.85rem;
-        }
-
-        .prose img {
-            border-radius: 0.5rem;
+        .group:hover .thumb-gray {
+            filter: grayscale(0);
+            transform: scale(1.05);
         }
     </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
 
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-zinc-100 transition-all duration-300">
-        <div class="max-w-[1280px] mx-auto px-6 h-14 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2 group">
-                <!-- Use this is logo needed -->
-                <!-- <div class="p-1 bg-black text-white rounded">
-                    <i data-lucide="camera" class="w-3 h-3"></i>
-                </div> -->
-                <span
-                    class="font-bold text-base tracking-tight text-zinc-900 group-hover:text-zinc-600 transition-colors">{{
-                    PlatformName }}</span>
+    <nav class="sticky top-0 z-50 border-b border-zinc-100 nav-blur">
+        <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+            <a href="/" class="flex items-center transition-opacity hover:opacity-70">
+                <span class="font-bold text-base tracking-tighter text-zinc-900 ">{{PlatformName}}</span>
             </a>
 
-            <a href="#"
-                class="text-xs font-semibold uppercase tracking-wider text-zinc-500 hover:text-black transition-colors border border-zinc-200 px-3 py-1.5 rounded-full hover:border-black">
-                Subscribe
-            </a>
+            <div class="flex items-center gap-6 text-sm font-medium">
+                <!-- for future use  -->
+                <!-- <a href="#" class="text-zinc-500 hover:text-black transition-colors">Archive</a> -->
+                <a href="#"
+                    class="text-black border border-zinc-200 px-3 py-1 rounded-full text-xs hover:border-black transition-all">Subscribe</a>
+            </div>
         </div>
     </nav>
 
-    <main class="flex-1 w-full max-w-[1400px] mx-auto px-6 py-8 md:py-12">
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <main class="flex-1 w-full max-w-7xl mx-auto px-6 py-12 lg:py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
 
             <div class="lg:col-span-8">
                 {% if latest %}
-                <section class="relative">
+                <section>
                     <div class="flex items-center gap-2 mb-4">
-                        <span class="w-2 h-2 rounded-full bg-black animate-pulse"></span>
-                        <span class="text-xs font-bold uppercase tracking-widest text-zinc-500">Featured Write-up</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+                        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">Featured</span>
                     </div>
 
-                    <a href="/blog/{{ latest.meta.slug }}" class="group block mb-4">
-                        <h2
-                            class="text-4xl md:text-6xl font-extrabold text-zinc-900 leading-tight group-hover:text-zinc-600 transition-colors duration-300">
+                    <a href="/blog/{{ latest.meta.slug }}" class="group block mb-6">
+                        <h1
+                            class="text-[var(--text-h1)] font-bold text-zinc-900 leading-[1.1] tracking-tighter group-hover:text-zinc-600 transition-colors">
                             {{ latest.meta.title }}
-                        </h2>
+                        </h1>
                     </a>
 
-                    <div class="flex items-center gap-4 text-sm font-medium text-zinc-400 mb-8">
-                        <div class="flex items-center gap-2 text-zinc-900">
-                            <i data-lucide="user" class="w-4 h-4"></i>
-                            <span>{{ latest.meta.author.name }}</span>
-                        </div>
-                        <span>•</span>
-                        <span>{{ latest.meta.updated_at.strftime("%B %d, %Y") }}</span>
+                    <div class="flex items-center gap-4 text-xs font-medium text-zinc-400 mb-10">
+                        <span class="text-zinc-900 font-semibold">{{ latest.meta.author.name }}</span>
+                        <span class="text-zinc-200">|</span>
+                        <time>{{ latest.meta.updated_at.strftime("%B %d, %Y") }}</time>
                     </div>
 
-                    <div class="relative max-h-[85vh] overflow-hidden border-b border-zinc-100">
-
-                        <div id="featured-content" class="prose prose-zinc prose-lg max-w-none text-zinc-600">
+                    <div class="relative">
+                        <div id="featured-content" class="prose prose-zinc line-clamp-[10] opacity-80">
                         </div>
-
-                        <div
-                            class="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-white via-white/95 to-transparent flex items-end justify-center pb-8">
+                        <div class="mt-8">
                             <a href="/blog/{{ latest.meta.slug }}"
-                                class="group flex items-center gap-3 bg-black text-white px-8 py-4 rounded-full font-semibold shadow-2xl hover:bg-zinc-800 hover:scale-105 transition-all duration-300 transform translate-y-2">
-                                Continue Reading
-                                <i data-lucide="arrow-right"
-                                    class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                class="inline-flex items-center gap-2 text-sm font-bold border-b-2 border-zinc-900 pb-0.5 hover:text-zinc-500 hover:border-zinc-300 transition-all">
+                                Read the full story
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
                             </a>
                         </div>
                     </div>
@@ -136,100 +115,81 @@
                 {% endif %}
             </div>
 
-            <div class="lg:col-span-4 border-l border-zinc-100 lg:pl-12">
+            <div class="lg:col-span-4 lg:border-l lg:border-zinc-100 lg:pl-12">
+                <h3 class="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-8">Recent Stories</h3>
+
                 {% if blogs %}
-                <section class="sticky top-24">
-                    <div class="flex items-baseline justify-between mb-8 pb-4 border-b border-zinc-100">
-                        <h3 class="text-lg font-bold text-zinc-900 uppercase tracking-wide">Recent Stories</h3>
-                        <span class="text-xs font-medium bg-zinc-100 px-2 py-1 rounded-full text-zinc-500">{{
-                            blogs|length }}</span>
-                    </div>
+                <div class="space-y-10">
+                    {% for b in blogs %}
+                    <a href="/blog/{{ b.slug }}" class="group flex items-start gap-4">
+                        <div class="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-zinc-50 border border-zinc-100">
+                            {% if b.thumbnail_url %}
+                            <img src="{{ b.thumbnail_url }}" alt="" class="w-full h-full object-cover thumb-gray">
+                            {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-zinc-200">
+                                <i data-lucide="image" class="w-4 h-4"></i>
+                            </div>
+                            {% endif %}
+                        </div>
 
-                    <div class="flex flex-col gap-8">
-                        {% for blog in blogs %}
-                        <a href="/blog/{{ blog.slug }}" class="group block">
-                            <article class="flex flex-col h-full">
-                                <div class="mb-2">
-                                    <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
-                                        {{ blog.updated_at.strftime("%b %d") }}
-                                    </span>
-                                </div>
-
-                                <h4
-                                    class="text-lg font-bold text-zinc-900 leading-tight mb-2 group-hover:text-zinc-600 transition-colors">
-                                    {{ blog.title }}
-                                </h4>
-
-                                <p class="font-serif text-sm text-zinc-500 leading-relaxed line-clamp-2 mb-3">
-                                    {{ blog.description }}
-                                </p>
-
-                                <div
-                                    class="flex items-center text-xs font-medium text-zinc-400 group-hover:text-black transition-colors">
-                                    Read story <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i>
-                                </div>
-                            </article>
-                        </a>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Archive for future use -->
-                    <!-- <div class="mt-10 pt-6 border-t border-dashed border-zinc-200 text-center">
-                        <a href="#" class="text-sm font-semibold text-zinc-900 hover:underline">View Archive</a>
-                    </div> -->
-                </section>
-                {% else %}
-                <div class="p-6 text-center bg-zinc-50 rounded-lg border border-dashed border-zinc-200">
-                    <p class="text-sm text-zinc-500">No other stories yet.</p>
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-1">
+                                {{ b.updated_at.strftime("%b %d") }}
+                            </span>
+                            <h4
+                                class="text-sm font-bold text-zinc-900 leading-snug group-hover:text-zinc-500 transition-colors line-clamp-2">
+                                {{ b.title }}
+                            </h4>
+                        </div>
+                    </a>
+                    {% endfor %}
                 </div>
+                {% else %}
+                <p class="text-xs text-zinc-400 italic">No other stories yet.</p>
                 {% endif %}
+
+                <div class="mt-16 p-6 bg-zinc-50 rounded-xl border border-zinc-100">
+                    <h4 class="text-sm font-bold text-zinc-900 mb-2">Subscribe</h4>
+                    <p class="text-xs text-zinc-500 leading-relaxed mb-4">Get the latest technical write-ups in your
+                        inbox.</p>
+                    <div class="flex flex-col gap-2">
+                        <input type="email" placeholder="you@example.com"
+                            class="bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs focus:ring-1 ring-black outline-none transition-all">
+                        <button
+                            class="bg-zinc-900 text-white text-xs font-bold py-2 rounded-lg hover:bg-black transition-all">Join</button>
+                    </div>
+                </div>
             </div>
 
         </div>
-
     </main>
 
-    <footer class="border-t border-zinc-100 bg-white py-10 mt-auto">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-sm text-zinc-400">&copy; {{ latest.meta.updated_at.strftime("%Y") if latest else '2025' }}
-                {{ PlatformName }}.</p>
-            <div class="flex gap-6">
-                <a href="#" class="text-zinc-400 hover:text-black transition"><i data-lucide="twitter"
+    <footer class="py-12 border-t border-zinc-100 bg-white">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <span class="text-[10px] font-bold  tracking-widest text-zinc-400">© 2026 {{PlatformName}}</span>
+            <div class="flex gap-4">
+                <a href="#" class="text-zinc-400 hover:text-black transition-colors"><i data-lucide="github"
                         class="w-4 h-4"></i></a>
-                <a href="#" class="text-zinc-400 hover:text-black transition"><i data-lucide="github"
+                <a href="#" class="text-zinc-400 hover:text-black transition-colors"><i data-lucide="twitter"
                         class="w-4 h-4"></i></a>
             </div>
         </div>
     </footer>
 
-    {% if latest %}
     <script>
-                // Showing error but its ohk as this is jinja template
-
         lucide.createIcons();
-        const LATEST_CONTENT = {{ latest.content | tojson }};
 
-        // Setup Marked
-        marked.use({ breaks: true, gfm: true });
-
-        // Render Content
+        {% if latest %}
+        const content = {{ latest.content | tojson }};
         const container = document.getElementById('featured-content');
-        if (container && LATEST_CONTENT) {
-            container.innerHTML = marked.parse(LATEST_CONTENT);
-
-            // Syntax Highlight
+        if (container && content) {
+            container.innerHTML = marked.parse(content);
             container.querySelectorAll('pre code').forEach((el) => {
                 hljs.highlightElement(el);
             });
-            MathJax.typesetPromise();
         }
+        {% endif %}
     </script>
-    {% else %}
-    <script>
-        lucide.createIcons();
-    </script>
-    {% endif %}
-
 </body>
 
 </html>
